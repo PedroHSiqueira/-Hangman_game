@@ -1,17 +1,12 @@
 import random
+import csv
 
 def pegar_palavra():
-    arquivo = open("C:/Users/pedro/OneDrive/Documentos/Github/Jogo_forca/palavras.txt", "r")
-    palavras = []
-    
-    for linha in arquivo:
-        linha = linha.strip() # usado para remover espaços em branco
-        palavras.append(linha)
-        
-    arquivo.close()
-    numero = random.randrange(0, len(palavras)) # Sorteia um número
-    palavra_sorteada = palavras[numero].upper()
-    return palavra_sorteada
+    with open("palavras.csv", "r") as arquivo:
+        leitor = csv.reader(arquivo)
+        palavras = [palavra for palavra in leitor]
+        palavra_sorteada = random.choice(palavras)
+        return palavra_sorteada[0].upper()
 
 def chute_certo(palavra_sorteada, tentativa, letras_certas):
     index = 0
