@@ -26,10 +26,11 @@ def salvar_pontuacao(nome, pontuacao,acertou):
     with open("pontuacao.csv", "a") as arquivo:
         status = ""
         
-        if acertou == True:
-            status = "Ganhou"
+        if acertou == True :
+            status = "Venceu"
         else:
-            acertou = "Perdeu"
+            status = "Perdeu"
+            
         escritor = csv.writer(arquivo)
         escritor.writerow([nome, status, pontuacao])
     
@@ -61,11 +62,11 @@ while (not perdeu and not acertou):
         chute_certo(palavra_sorteada, tentativa, letra_acertos)
     else:
         erros += 1
-        print(f"Você Errou {erros} de 7 chances!\n")
+        print(f"Você Errou {erros} de 5 chances!\n")
         time.sleep(2)
         
     
-    perdeu = erros == 7
+    perdeu = erros == 5
     acertou = "_" not in letra_acertos
     print(letra_acertos)
     
@@ -75,9 +76,9 @@ if (acertou):
     print("=".center(60, "="))
     print(f"Parabéns {nome}, você acertou a palavra!")
     print("=".center(60, "="))
-    salvar_pontuacao(nome, pontuacao, acertou)
+    salvar_pontuacao(nome, pontuacao, True)
 else:
     print("=".center(60, "="))
     print("Bah ... Você Perdeu a palavra era: ", palavra_sorteada)
     print("=".center(60, "="))
-    salvar_pontuacao(nome, 0, acertou)
+    salvar_pontuacao(nome, 0, False)
