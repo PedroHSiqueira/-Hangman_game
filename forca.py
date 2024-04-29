@@ -3,8 +3,6 @@ import csv
 import os
 import time
 
-
-
 def pegar_palavra():
     with open("palavras.csv", "r") as arquivo:
         leitor = csv.reader(arquivo)
@@ -44,8 +42,6 @@ dados_jogo = pegar_palavra()
 
 palavra_sorteada = dados_jogo[0].upper()
 pontuacao = dados_jogo[1]
-
-print(dados_jogo)
 
 letra_acertos = ["_" for letra in palavra_sorteada]
 perdeu = False
