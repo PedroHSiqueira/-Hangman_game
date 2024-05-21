@@ -1,3 +1,4 @@
+nome,pontos
 Python,60
 JavaScript,90
 HTML,20
@@ -12,3 +13,19 @@ React,80
 Laravel,50
 Flutter,30
 Docker,70
+lua,40
+dart,60
+next,90
+vue,20
+maven,10
+gradle,40
+npm,80
+yarn,70
+pip,100
+conda,50
+git,80
+github,60
+gitlab,40
+bitbucket,20
+azure,10
+aws,30

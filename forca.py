@@ -8,6 +8,10 @@ def pegar_palavra():
         leitor = csv.reader(arquivo)
         palavras = [palavra for palavra in leitor]
         palavra_sorteada = random.choice(palavras)
+        
+        if(palavra_sorteada == "Nome"):
+            palavra_sorteada = random.choice(palavras)
+        
         return palavra_sorteada
 
 def chute_certo(palavra_sorteada, tentativa, letras_certas):
@@ -18,12 +22,13 @@ def chute_certo(palavra_sorteada, tentativa, letras_certas):
         index += 1
         
 def titulo():
-    print("=" * 30)
-    print("Jogo da Forca em pyhon")
-    print("=" * 30 + "\n")
+    print("-".center(60, "-"))
+    print("Bem vindo ao jogo da Forca")
+    print("-".center(60, "-"))
 
 def salvar_pontuacao(nome, pontuacao,acertou):
-    with open("pontuacao.csv", "a") as arquivo:
+    with open("pontuacao.csv", "a", newline="") as arquivo:
+        campus_headers = ["Nome", "Resultado", "Pontos"]
         status = ""
         
         if acertou == True :
@@ -31,8 +36,8 @@ def salvar_pontuacao(nome, pontuacao,acertou):
         else:
             status = "Perdeu"
             
-        escritor = csv.writer(arquivo)
-        escritor.writerow([nome, status, pontuacao])
+        escritor = csv.DictWriter(arquivo, campus_headers)
+        escritor.writerow({"Nome": nome, "Resultado": status, "Pontos": pontuacao})
     
 #Jogo 
 titulo()
@@ -45,40 +50,98 @@ palavra_sorteada = dados_jogo[0].upper()
 pontuacao = dados_jogo[1]
 
 letra_acertos = ["_" for letra in palavra_sorteada]
-perdeu = False
-acertou = False
-erros = 0
 
-
-while (not perdeu and not acertou):
-    titulo()
-    print(f"{letra_acertos}\n")
     
-    tentativa = input("Digite uma letra?:  ")
-    print()
-    tentativa = tentativa.strip().upper()
-    
-    if tentativa in palavra_sorteada:
-        chute_certo(palavra_sorteada, tentativa, letra_acertos)
-    else:
-        erros += 1
-        print(f"Você Errou {erros} de 5 chances!\n")
-        time.sleep(2)
-        
-    
-    perdeu = erros == 5
-    acertou = "_" not in letra_acertos
-    print(letra_acertos)
-    
+def jogar():
     os.system("cls")
+    
+    perdeu = False
+    acertou = False
+    erros = 0
+    
+    while (not perdeu and not acertou):
+        titulo()
+        print(f"{letra_acertos}\n")
 
-if (acertou):
-    print("=".center(60, "="))
-    print(f"Parabéns {nome}, você acertou a palavra!")
-    print("=".center(60, "="))
-    salvar_pontuacao(nome, pontuacao, True)
-else:
-    print("=".center(60, "="))
-    print("Bah ... Você Perdeu a palavra era: ", palavra_sorteada)
-    print("=".center(60, "="))
-    salvar_pontuacao(nome, 0, False)
+        tentativa = input("Digite uma letra?:  ")
+        print()
+        tentativa = tentativa.strip().upper()
+
+        if tentativa in palavra_sorteada:
+            chute_certo(palavra_sorteada, tentativa, letra_acertos)
+        else:
+            erros += 1
+            print(f"Você Errou {erros} de 5 chances!\n")
+            time.sleep(2)
+
+
+        perdeu = erros == 5
+        acertou = "_" not in letra_acertos
+        print(letra_acertos)
+        os.system("cls")
+
+    if (acertou):
+        print("=".center(60, "="))
+        print(f"Parabéns {nome}, você acertou a palavra!")
+        print("=".center(60, "="))
+        salvar_pontuacao(nome, pontuacao, True)
+    else:
+        print("=".center(60, "="))
+        print("Bah ... Você Perdeu a palavra era: ", palavra_sorteada)
+        print("=".center(60, "="))
+        salvar_pontuacao(nome, 0, False)
+
+
+def tabela():
+    os.system("cls")
+    with open("pontuacao.csv", "r") as arquivo:
+        leitor = csv.DictReader(arquivo)
+        print("Tabela de Pontuação")
+        print("=".center(60, "="))
+        for linha in leitor:
+            print(f"{linha['Nome']} - {linha['Resultado']} - {linha['Pontos']}")
+        print("=".center(60, "="))
+        input("Pressione Enter para voltar ao menu ...")
+        os.system("cls")    
+        
+# def tabela_2():
+#     jogadores = []
+
+#     with open("pontuacao.csv") as arq:
+#         linhas = csv.DictReader(arq)
+#         for linha in linhas:
+#             jogadores.append(linha)
+            
+#     jogadores = list(set([linha["Nome"] for linha in arq]))
+#     numeros = [0] * len(jogadores)
+    
+#     for linha in arq:
+#         index = jogadores.index(linha["Nome"])
+#         if linha["Resultado"] == "Venceu":
+#             numeros[index] += int(linha["Pontos"])
+#         else:
+#             numeros[index] -= int(linha["Pontos"])
+            
+#     agrupado = sorted(zip(jogadores, numeros), reverse=True)
+#     jogadores2, numeros2 = zip(*agrupado)
+    
+#     print("Tabela de Pontuação".center(60, "="))
+    
+#     for contador, (jogador, numero) in enumerate(zip(jogadores2, numeros2), start=1):
+#         print(f"{jogador} - {numero}")
+    
+    
+while True:
+    print("Escolha uma opção".center(60, "-"))
+    print("1. Jogar Forca")
+    print("2. Tabela de Pontuação")
+    print("3. Finalizar")
+    print("-".center(60, "-"))
+    opcao = int(input("Opção: "))
+    
+    if opcao == 1:
+      jogar()
+    elif opcao == 2:
+      tabela()
+    else:
+      break
