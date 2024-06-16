@@ -31,6 +31,9 @@ def salvar_pontuacao(nome, pontuacao,acertou):
         campus_headers = ["Nome", "Resultado", "Pontos"]
         status = ""
         
+        if pontuacao == "pontos":
+            pontuacao = 100
+        
         if acertou == True :
             status = "Venceu"
         else:
@@ -40,20 +43,19 @@ def salvar_pontuacao(nome, pontuacao,acertou):
         escritor.writerow({"Nome": nome, "Resultado": status, "Pontos": pontuacao})
     
 #Jogo 
-titulo()
-nome = input("Digite seu nome: ")
-os.system("cls")
-
-dados_jogo = pegar_palavra()
-
-palavra_sorteada = dados_jogo[0].upper()
-pontuacao = dados_jogo[1]
-
-letra_acertos = ["_" for letra in palavra_sorteada]
-
-    
 def jogar():
     os.system("cls")
+    
+    titulo()
+    nome = input("Digite seu nome: ")
+    os.system("cls")
+
+    dados_jogo = pegar_palavra()
+
+    palavra_sorteada = dados_jogo[0].upper()
+    pontuacao = dados_jogo[1]
+
+    letra_acertos = ["_" for letra in palavra_sorteada]
     
     perdeu = False
     acertou = False
@@ -102,34 +104,7 @@ def tabela():
             print(f"{linha['Nome']} - {linha['Resultado']} - {linha['Pontos']}")
         print("=".center(60, "="))
         input("Pressione Enter para voltar ao menu ...")
-        os.system("cls")    
-        
-# def tabela_2():
-#     jogadores = []
-
-#     with open("pontuacao.csv") as arq:
-#         linhas = csv.DictReader(arq)
-#         for linha in linhas:
-#             jogadores.append(linha)
-            
-#     jogadores = list(set([linha["Nome"] for linha in arq]))
-#     numeros = [0] * len(jogadores)
-    
-#     for linha in arq:
-#         index = jogadores.index(linha["Nome"])
-#         if linha["Resultado"] == "Venceu":
-#             numeros[index] += int(linha["Pontos"])
-#         else:
-#             numeros[index] -= int(linha["Pontos"])
-            
-#     agrupado = sorted(zip(jogadores, numeros), reverse=True)
-#     jogadores2, numeros2 = zip(*agrupado)
-    
-#     print("Tabela de Pontuação".center(60, "="))
-    
-#     for contador, (jogador, numero) in enumerate(zip(jogadores2, numeros2), start=1):
-#         print(f"{jogador} - {numero}")
-    
+        os.system("cls")        
     
 while True:
     print("Escolha uma opção".center(60, "-"))
